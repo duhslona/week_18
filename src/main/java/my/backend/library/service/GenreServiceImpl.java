@@ -19,8 +19,9 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public GenreDto getGenreById(Long id) {
-        Genre genre = genreRepository.findById(id).orElseThrow();
-        return convertToDto(genre);
+//        Genre genre = genreRepository.findById(id).orElseThrow();
+        List<Genre> genre = genreRepository.findById1(id);
+        return convertToDto(genre.get(0));
     }
 
     private GenreDto convertToDto(Genre genre) {
