@@ -1,6 +1,8 @@
 package my.backend.library.service;
 
+import my.backend.library.dto.AuthorCreateDto;
 import my.backend.library.dto.AuthorDto;
+import my.backend.library.dto.AuthorUpdateDto;
 
 import java.util.List;
 
@@ -13,4 +15,10 @@ public interface AuthorService {
     List<AuthorDto> getAuthorByNameV2(String name);
 
     List<AuthorDto> getByNameV3(String name);
+
+    AuthorDto createAuthor(AuthorCreateDto authorCreateDto);
+
+    AuthorDto updateAuthor(AuthorUpdateDto authorUpdateDto);
+
+    void deleteAuthor(Long id);
 }

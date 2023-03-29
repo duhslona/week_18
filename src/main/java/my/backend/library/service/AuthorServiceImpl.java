@@ -5,14 +5,15 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
+import my.backend.library.dto.AuthorCreateDto;
 import my.backend.library.dto.AuthorDto;
+import my.backend.library.dto.AuthorUpdateDto;
 import my.backend.library.dto.BookDto;
 import my.backend.library.model.Author;
 import my.backend.library.repository.AuthorRepository;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,17 +57,49 @@ public class AuthorServiceImpl implements AuthorService {
         return convertToDto(authors);
     }
 
+    @Override
+    public AuthorDto createAuthor(AuthorCreateDto authorCreateDto) {
+        Author author = authorRepository.save(convertDtoToEntity(authorCreateDto));
+        AuthorDto authorDto = convertToDto(author);
+        return authorDto;
+    }
+
+    @Override
+    public AuthorDto updateAuthor(AuthorUpdateDto authorUpdateDto) {
+        Author author = authorRepository.findById(authorUpdateDto.getId()).orElseThrow();
+        author.setName(authorUpdateDto.getName());
+        author.setSurname(authorUpdateDto.getSurname());
+        Author savedAuthor = authorRepository.save(author);
+        AuthorDto authorDto = convertToDto(savedAuthor);
+        return authorDto;
+    }
+
+    @Override
+    public void deleteAuthor(Long id) {
+        authorRepository.deleteById(id);
+    }
+
+    private Author convertDtoToEntity(AuthorCreateDto authorCreateDto) {
+        return Author.builder()
+                .name(authorCreateDto.getName())
+                .surname(authorCreateDto.getSurname())
+                .build();
+    }
+
     private List<AuthorDto> convertToDto(List<Author> authors) {
         return authors.stream().map(author -> convertToDto(author)).collect(Collectors.toList());
     }
 
     private AuthorDto convertToDto(Author author) {
-        List<BookDto> bookDtoList = author.getBooks()
-                .stream()
-                .map(book -> BookDto.builder()
-                        .name(book.getName())
-                        .build()
-                ).toList();
+        List<BookDto> bookDtoList = null;
+        if (author.getBooks() != null) {
+            bookDtoList = author.getBooks()
+                    .stream()
+                    .map(book -> BookDto.builder()
+                            .name(book.getName())
+                            .build()
+                    ).toList();
+        }
         return AuthorDto.builder()
                 .books(bookDtoList)
                 .id(author.getId())
