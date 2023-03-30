@@ -7,6 +7,7 @@ import my.backend.library.dto.AuthorUpdateDto;
 import my.backend.library.service.AuthorService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -53,7 +54,12 @@ public class AuthorController {
     }
 
     @DeleteMapping("/author/delete/{id}")
-    void updateAuthor(@PathVariable("id") Long id) {
+    void deleteAuthor(@PathVariable("id") Long id) {
         authorService.deleteAuthor(id);
+    }
+
+    @PatchMapping("/author/patch/{id}")
+    AuthorDto updatePartAuthor(@PathVariable("id") Long id, @RequestBody AuthorUpdateDto authorUpdateDto) {
+        return authorService.updatePartAuthor(id, authorUpdateDto);
     }
 }

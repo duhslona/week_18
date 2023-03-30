@@ -79,6 +79,21 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.deleteById(id);
     }
 
+    @Override
+    public AuthorDto updatePartAuthor(Long id, AuthorUpdateDto authorUpdateDto) {
+        Author author = authorRepository.findById(id).orElseThrow();
+        if (authorUpdateDto.getName() != null) {
+            author.setName(authorUpdateDto.getName());
+        }
+        if (authorUpdateDto.getSurname() != null) {
+            author.setSurname(authorUpdateDto.getSurname());
+        }
+        Author savedAuthor = authorRepository.save(author);
+        AuthorDto authorDto = convertToDto(savedAuthor);
+        return authorDto;
+    }
+
+
     private Author convertDtoToEntity(AuthorCreateDto authorCreateDto) {
         return Author.builder()
                 .name(authorCreateDto.getName())
