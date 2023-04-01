@@ -44,7 +44,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<AuthorDto> getByNameV3(String name) {
         Specification<Author> specification = Specification
-                .where(new Specification<Author>() {
+                .where(new Specification<>() {
                     @Override
                     public Predicate toPredicate(Root<Author> root,
                                                  CriteriaQuery<?> query,
@@ -53,7 +53,7 @@ public class AuthorServiceImpl implements AuthorService {
                     }
                 });
 
-        List<Author> authors = authorRepository.findAll(specification).stream().collect(Collectors.toList());
+        List<Author> authors = authorRepository.findAll(specification);
         return convertToDto(authors);
     }
 
@@ -102,7 +102,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     private List<AuthorDto> convertToDto(List<Author> authors) {
-        return authors.stream().map(author -> convertToDto(author)).collect(Collectors.toList());
+        return authors.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     private AuthorDto convertToDto(Author author) {
