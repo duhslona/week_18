@@ -4,6 +4,8 @@ import my.backend.library.dto.BookCreateDto;
 import my.backend.library.dto.BookDto;
 import my.backend.library.dto.BookUpdateDto;
 
+import java.util.List;
+
 public interface BookService {
 
     BookDto getByNameV1(String name);
@@ -19,4 +21,6 @@ public interface BookService {
     BookDto updateBook(BookUpdateDto bookUpdateDto);
 
     void deleteBook(Long id);
+
+    List<BookDto> getAllBooks();
 }
