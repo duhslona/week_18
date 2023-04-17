@@ -9,6 +9,7 @@ import my.backend.library.model.Genre;
 import my.backend.library.repository.GenreRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,12 +18,34 @@ import java.util.stream.Collectors;
 public class GenreServiceImpl implements GenreService {
 
     private final GenreRepository genreRepository;
+
     @Override
-    public GenreDto getGenreById(Long id) {
-        List<GenreWithBooksDto> genre = genreRepository.findCustom(id).orElseThrow();
-        return convertToDto(genre);
+    public List<GenreDto> getGenreById(Long id) {
+        List<String[]> genresWithBooks = genreRepository.findCustom(id).orElseThrow();
+        return convertToDto(genresWithBooks);
     }
 
+
+    private List<GenreDto> convertToDto(List<String[]> genresWithBooks) {
+        List<GenreWithBooksDto> genresWithBooksDtoList = genresWithBooks.stream().map(x -> new GenreWithBooksDto(x[0], x[1], x[2], x[3])).collect(Collectors.toList());
+
+        List<GenreDto> result = new ArrayList<>();
+
+        for (GenreWithBooksDto genre : genresWithBooksDtoList) {
+            if (listContainsGenre(result, genre.getGenreName())) {
+
+            } else{
+                result.add()
+            }
+//        }
+        }
+    }
+
+    private GenreDto convertToDto(GenreWithBooksDto genreWithBooksDto){
+        return GenreDto.builder()
+                .name(genreWithBooksDto.getGenreName())
+                .books()
+    }
     private GenreDto convertToDto(Genre genre) {
         List<BookDto> bookDtoList = genre.getBooks()
                 .stream()
@@ -38,7 +61,12 @@ public class GenreServiceImpl implements GenreService {
                 .build();
     }
 
-    private GenreDto convertToDto(List<GenreWithBooksDto> genres) {
+    private List<GenreDto> convertToDto(GenreWithBooksDto[] genres) {
+//        List<GenreDto> result = new ArrayList<>();
+//
+//        for (String genre : genres) {
+//            if (result.contains(result, genre.))
+//        }
         return null;
 //        List<BookDto> bookDtoList = genre.getBooks()
 //                .stream()
@@ -52,5 +80,18 @@ public class GenreServiceImpl implements GenreService {
 //                .name(genre.getName())
 //                .books(bookDtoList)
 //                .build();
+    }
+
+    private boolean listContainsGenre(List<GenreDto> genreList, String genreName) {
+        for (GenreDto genreDto : genreList) {
+            if (genreDto.getName().equals(genreName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean listContainsBook(){
+
     }
 }
