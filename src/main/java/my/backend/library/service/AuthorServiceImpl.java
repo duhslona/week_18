@@ -93,6 +93,12 @@ public class AuthorServiceImpl implements AuthorService {
         return authorDto;
     }
 
+    @Override
+    public List<AuthorDto> getAllAuthors() {
+        List<Author> authors = authorRepository.findAll();
+        return convertToDto(authors);
+    }
+
 
     private Author convertDtoToEntity(AuthorCreateDto authorCreateDto) {
         return Author.builder()

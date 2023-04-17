@@ -15,7 +15,13 @@
             <li class="table-row">
                 <div class="col col-1">${book.id}</div>
                 <div class="col col-2">${book.name}</div>
-                <div class="col col-3">${book.genre}</div>
+                    <#if book.genre="Роман">
+                        <div class="col col-3 red">${book.genre}</div>
+                    <#elseif book.genre="Рассказ">
+                        <div class="col col-3 blue">${book.genre}</div>
+                    <#elseif book.genre="Комедия">
+                        <div class="col col-3 green">${book.genre}</div>
+                    </#if>
             </li>
         </#list>
     </ul>

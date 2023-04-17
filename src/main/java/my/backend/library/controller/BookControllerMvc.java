@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 @RequiredArgsConstructor
-public class BookController1 {
+public class BookControllerMvc {
 
     private final BookService bookService;
 
