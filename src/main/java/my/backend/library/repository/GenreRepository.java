@@ -10,10 +10,10 @@ import java.util.Optional;
 
 public interface GenreRepository extends JpaRepository<Genre, Long> {
 
-    @Query(value = "select g.name, b.name, a.name, a.surname from Genre g " +
-            "inner join Book b on g.id = b.genre.id " +
-            "inner join AuthorBook ab on b.id = ab.authorBookPK.bookId " +
-            "inner join Author a on a.id = ab.authorBookPK.authorId " +
-            "where g.id = ?1")
-    Optional<List<GenreWithBooksDto>> findCustom(Long id);
+//    @Query(value = "select g.name, b.name, a.name, a.surname from Genre g " +
+//            "inner join Book b on g.id = b.genre.id " +
+//            "inner join AuthorBook ab on b.id = ab.authorBookPK.bookId " +
+//            "inner join Author a on a.id = ab.authorBookPK.authorId " +
+//            "where g.id = ?1")
+//    Optional<List<GenreWithBooksDto>> findCustom(Long id);
 }

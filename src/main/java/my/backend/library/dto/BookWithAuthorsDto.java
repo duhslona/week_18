@@ -8,15 +8,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GenreWithBooksDto {
-
-    private String genreName;
-    private List<BookWithAuthorsDto> books;
-
+public class BookWithAuthorsDto {
+    private String name;
+    private List<String> authors;
 }
