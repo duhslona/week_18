@@ -47,6 +47,7 @@ public class SecurityConfig {
                                 .requestMatchers("/book/v2").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
+                .csrf().disable()
                 .httpBasic();
 
         return http.build();
