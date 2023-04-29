@@ -1,21 +1,19 @@
 package my.backend.library.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
 
 @Entity
 @Table(name = "roles")
 @Getter
-public class Role implements GrantedAuthority {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +21,6 @@ public class Role implements GrantedAuthority {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles")
     private Set<User> users;
-
-    @Override
-    public String getAuthority() {
-        return "ROLE_" + this.name;
-    }
 }
