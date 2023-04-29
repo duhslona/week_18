@@ -1,5 +1,6 @@
 package my.backend.library.model;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,12 +29,13 @@ public class User implements UserDetails {
     private String login;
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_role",
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-    private Set<Role> roles;
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "user_role",
+//            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @ElementCollection
+    private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

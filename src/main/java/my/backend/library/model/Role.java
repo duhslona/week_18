@@ -1,5 +1,6 @@
 package my.backend.library.model;
 
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Entity
 @Table(name = "roles")
 @Getter
+@Embeddable
 public class Role implements GrantedAuthority {
 
     @Id
@@ -23,8 +25,8 @@ public class Role implements GrantedAuthority {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
-    private Set<User> users;
+//    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
+//    private Set<User> users;
 
     @Override
     public String getAuthority() {
