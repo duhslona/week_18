@@ -1,9 +1,9 @@
 package my.backend.library.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import my.backend.library.dto.RoleDto;
 import my.backend.library.dto.UserDto;
-import my.backend.library.model.Role;
 import my.backend.library.model.User;
 import my.backend.library.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,11 +12,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -24,11 +25,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByLogin(username).orElseThrow();
-        if (user == null) {
+        log.info("Try to find user by username {}.", username);
+        Optional<User> user = userRepository.findByLogin(username);
+        if (user.isPresent()) {
+            UserDto userDto = convertToDto(user.get());
+            log.info("User: {}.", userDto);
+            return userDto;
+        } else {
+            log.error("Can't find user with username {}.", username);
             throw new UsernameNotFoundException("User with username " + username + " was not found");
         }
-        return convertToDto(user);
     }
 
     private UserDto convertToDto(User user) {
