@@ -7,17 +7,13 @@ import my.backend.library.dto.BookCreateDto;
 import my.backend.library.dto.BookDto;
 import my.backend.library.dto.BookUpdateDto;
 import my.backend.library.service.BookService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -58,7 +54,7 @@ public class BookController {
     }
 
     @DeleteMapping("/book/delete/{id}")
-    void updateBook(@PathVariable("id") Long id) {
+    void deleteBook(@PathVariable("id") Long id) {
         bookService.deleteBook(id);
     }
 
