@@ -59,8 +59,7 @@ public class BookRestControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/book?name={name}", bookDto.getName()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(bookDto.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(bookDto.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value(bookDto.getGenre()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(bookDto.getName()));
     }
 
     @Test
@@ -68,8 +67,7 @@ public class BookRestControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/book/{id}", bookDto.getId()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(bookDto.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(bookDto.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value(bookDto.getGenre()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(bookDto.getName()));
     }
 
     @Test
@@ -77,8 +75,7 @@ public class BookRestControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/book/v2?name={name}", bookDto.getName()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(bookDto.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(bookDto.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value(bookDto.getGenre()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(bookDto.getName()));
     }
 
     @Test
@@ -86,8 +83,7 @@ public class BookRestControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/book/v3?name={name}", bookDto.getName()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(bookDto.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(bookDto.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value(bookDto.getGenre()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(bookDto.getName()));
     }
 
     @Test

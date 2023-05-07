@@ -6,13 +6,14 @@ import my.backend.library.dto.AuthorDto;
 import my.backend.library.dto.AuthorUpdateDto;
 import my.backend.library.utils.JsonUtils;
 import my.backend.library.utils.RandomUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -25,15 +26,31 @@ public class AuthorRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    private AuthorDto authorDto;
+
+    @BeforeEach
+    public void createAuthor() throws Exception {
+        AuthorCreateDto authorCreateDto = new AuthorCreateDto();
+        authorCreateDto.setName("Name" + RandomUtils.getRandomString(5));
+        authorCreateDto.setSurname("Surname" + RandomUtils.getRandomString(5));
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/author/create")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(JsonUtils.getJson(authorCreateDto)))
+                .andReturn();
+
+        authorDto = JsonUtils.fromJson(result.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+    }
+
+    @AfterEach
+    public void removeAuthor() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/author/delete/" + authorDto.getId()));
+    }
+
     @Test
     public void testGetAuthorById() throws Exception {
-        Long authorId = 1L;
-        AuthorDto authorDto = new AuthorDto();
-        authorDto.setId(authorId);
-        authorDto.setName("Александр");
-        authorDto.setSurname("Пушкин");
-
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/author/{id}", authorId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/author/{id}", authorDto.getId()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(authorDto.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(authorDto.getName()))
@@ -42,14 +59,7 @@ public class AuthorRestControllerTest {
 
     @Test
     public void testGetAuthorByName() throws Exception {
-        Long authorId = 1L;
-        String name = "Александр";
-        AuthorDto authorDto = new AuthorDto();
-        authorDto.setId(authorId);
-        authorDto.setName(name);
-        authorDto.setSurname("Пушкин");
-
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/author?name=" + name))
+        mockMvc.perform(MockMvcRequestBuilders.get("/author?name=" + authorDto.getName()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(authorDto.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(authorDto.getName()))
@@ -58,14 +68,7 @@ public class AuthorRestControllerTest {
 
     @Test
     public void testGetAuthorByNameV2() throws Exception {
-        Long authorId = 1L;
-        String name = "Александр";
-        AuthorDto authorDto = new AuthorDto();
-        authorDto.setId(authorId);
-        authorDto.setName(name);
-        authorDto.setSurname("Пушкин");
-
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/author/v2?name=" + name))
+        mockMvc.perform(MockMvcRequestBuilders.get("/author/v2?name=" + authorDto.getName()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(authorDto.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(authorDto.getName()))
@@ -74,14 +77,7 @@ public class AuthorRestControllerTest {
 
     @Test
     public void testGetAuthorByNameV3() throws Exception {
-        Long authorId = 1L;
-        String name = "Александр";
-        AuthorDto authorDto = new AuthorDto();
-        authorDto.setId(authorId);
-        authorDto.setName(name);
-        authorDto.setSurname("Пушкин");
-
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/author/v3?name=" + name))
+        mockMvc.perform(MockMvcRequestBuilders.get("/author/v3?name=" + authorDto.getName()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(authorDto.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(authorDto.getName()))
@@ -91,8 +87,8 @@ public class AuthorRestControllerTest {
     @Test
     public void testCreateAuthor() throws Exception {
         AuthorCreateDto authorCreateDto = new AuthorCreateDto();
-        authorCreateDto.setName("Новый");
-        authorCreateDto.setSurname("Автор");
+        authorCreateDto.setName("New" + RandomUtils.getRandomString(5));
+        authorCreateDto.setSurname("Surname" + RandomUtils.getRandomString(5));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/author/create")
                         .contentType(APPLICATION_JSON_UTF8)
@@ -128,20 +124,6 @@ public class AuthorRestControllerTest {
 
     @Test
     public void testUpdateAuthor() throws Exception {
-        //create author for test
-        AuthorCreateDto authorCreateDto = new AuthorCreateDto();
-        authorCreateDto.setName("Тест" + RandomUtils.getRandomString(5));
-        authorCreateDto.setSurname("Автор" + RandomUtils.getRandomString(5));
-
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/author/create")
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .content(JsonUtils.getJson(authorCreateDto)))
-                .andReturn();
-
-        AuthorDto authorDto = JsonUtils.fromJson(result.getResponse().getContentAsString(), new TypeReference<>() {
-        });
-
-        //Update author
         AuthorUpdateDto authorUpdateDto = new AuthorUpdateDto();
         authorUpdateDto.setId(authorDto.getId());
         authorUpdateDto.setName(RandomUtils.getRandomString(10));
@@ -158,20 +140,6 @@ public class AuthorRestControllerTest {
 
     @Test
     public void testDeleteAuthor() throws Exception {
-        //create author for test
-        AuthorCreateDto authorCreateDto = new AuthorCreateDto();
-        authorCreateDto.setName("Тест" + RandomUtils.getRandomString(5));
-        authorCreateDto.setSurname("Автор" + RandomUtils.getRandomString(5));
-
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/author/create")
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .content(JsonUtils.getJson(authorCreateDto)))
-                .andReturn();
-
-        AuthorDto authorDto = JsonUtils.fromJson(result.getResponse().getContentAsString(), new TypeReference<>() {
-        });
-
-        //Delete author
         AuthorUpdateDto authorUpdateDto = new AuthorUpdateDto();
         authorUpdateDto.setId(authorDto.getId());
         authorUpdateDto.setName(RandomUtils.getRandomString(10));
@@ -183,20 +151,6 @@ public class AuthorRestControllerTest {
 
     @Test
     public void testUpdatePartAuthor() throws Exception {
-        //create author for test
-        AuthorCreateDto authorCreateDto = new AuthorCreateDto();
-        authorCreateDto.setName("Test" + RandomUtils.getRandomString(5));
-        authorCreateDto.setSurname("Author" + RandomUtils.getRandomString(5));
-
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/author/create")
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .content(JsonUtils.getJson(authorCreateDto)))
-                .andReturn();
-
-        AuthorDto authorDto = JsonUtils.fromJson(result.getResponse().getContentAsString(), new TypeReference<>() {
-        });
-
-        //Update author
         AuthorUpdateDto authorUpdateDto = new AuthorUpdateDto();
         authorUpdateDto.setId(null);
         authorUpdateDto.setName(RandomUtils.getRandomString(10));

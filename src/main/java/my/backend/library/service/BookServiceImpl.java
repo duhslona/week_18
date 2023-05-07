@@ -111,9 +111,8 @@ public class BookServiceImpl implements BookService {
     public BookDto updateBook(BookUpdateDto bookUpdateDto) {
         log.info("Try to update book with id {} with values {}.", bookUpdateDto.getId(), bookUpdateDto);
         Book book = convertDtoToEntity(bookUpdateDto);
-
         Book savedBook = bookRepository.save(book);
-        log.info("Book saved.");
+        log.info("===> " + savedBook.getName());
         return convertEntityToDto(savedBook);
     }
 
@@ -142,7 +141,6 @@ public class BookServiceImpl implements BookService {
     private Book convertDtoToEntity(BookCreateDto bookCreateDto) {
         Genre genre = genreRepository.findById(bookCreateDto.getGenreId()).orElseThrow();
         Set<Author> authors = authorRepository.findAuthorByIdsBySql(bookCreateDto.getAuthorIds()).orElseThrow();
-
         return Book.builder()
                 .name(bookCreateDto.getName())
                 .authors(authors)
