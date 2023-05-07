@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="4" author="olga ko">
+        <sql>
+            Create table if not exists roles (
+                                                id bigserial PRIMARY KEY,
+                                                name varchar NOT NULL
+            );
+            Create table if not exists users (
+                                                  id bigserial PRIMARY KEY,
+                                                  login varchar NOT NULL,
+                                                  password varchar NOT NULL
+            );
+            Create table if not exists user_role (
+                                                       user_id bigint NOT NULL,
+                                                       role_id bigint NOT NULL,
+                                                       FOREIGN KEY (user_id) REFERENCES users (id),
+                                                       FOREIGN KEY (role_id) REFERENCES roles (id)
+            );
+            Insert into users(login, password) values
+                                                  ('user1', '$2a$12$PrjV9KUYIUvj02X15k.SLedvcyTykeol1kSV.XwdP3TG83liJTbzK'),
+                                                  ('user2', '$2a$12$LT83P070i09JQUNNDomA8ODb7yGimhwXCcRzHBX0rmNyMSBZ5n3M6'),
+                                                  ('admin', '$2a$12$nKWzEB5Tsa47KxL3yDfOlOfZCayk6J347Ra1tzFUYydXwfT65HuI2');
+
+            Insert into roles(name) values
+                                                  ('USER'),
+                                                  ('ADMIN');
+
+            Insert into user_role(user_id, role_id) values
+                                                   (1, 1),
+                                                   (2, 1),
+                                                   (2, 2),
+                                                   (3, 2);
+
+        </sql>
+    </changeSet>
+</databaseChangeLog>

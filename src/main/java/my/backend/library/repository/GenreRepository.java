@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface GenreRepository extends JpaRepository<Genre, Long> {
 
 //    @Query(value = "select g.name, b.name, a.name, a.surname from Genre g " +
