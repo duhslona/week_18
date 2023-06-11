@@ -2,6 +2,9 @@ package my.backend.library.service;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import my.backend.library.dto.BookDto;
+import my.backend.library.dto.GenreDto;
 import my.backend.library.dto.BookWithAuthorsDto;
 import my.backend.library.dto.GenreWithBooksDto;
 import my.backend.library.model.Author;
@@ -14,9 +17,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GenreServiceImpl implements GenreService {
 
     private final GenreRepository genreRepository;
@@ -25,7 +32,9 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public GenreWithBooksDto getGenreById(Long id) {
+        log.info("Try to find genre by id {}.", id);
         Genre genre = genreRepository.findById(id).orElseThrow();
+        log.info("Try to find books by genreId {}.", id);
         List<Book> books = bookRepository.findByGenreId(id).orElseThrow();
 
         List<BookWithAuthorsDto> booksWithAuthors = new ArrayList<>();
@@ -42,9 +51,12 @@ public class GenreServiceImpl implements GenreService {
                     .build());
         }
 
-        return GenreWithBooksDto.builder()
+        GenreWithBooksDto genreDto = GenreWithBooksDto.builder()
                 .genreName(genre.getName())
                 .books(booksWithAuthors)
                 .build();
+        log.info("Genre: {}.", genreDto);
+
+        return genreDto;
     }
 }

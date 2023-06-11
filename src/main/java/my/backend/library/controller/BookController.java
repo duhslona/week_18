@@ -1,5 +1,7 @@
 package my.backend.library.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import my.backend.library.dto.BookCreateDto;
 import my.backend.library.dto.BookDto;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "library-users")
 public class BookController {
 
     private final BookService bookService;
@@ -45,12 +48,12 @@ public class BookController {
     }
 
     @PostMapping("/book/create")
-    BookDto createBook(@RequestBody BookCreateDto bookCreateDto) {
+    BookDto createBook(@RequestBody @Valid BookCreateDto bookCreateDto) {
         return bookService.createBook(bookCreateDto);
     }
 
     @PutMapping("/book/update")
-    BookDto updateBook(@RequestBody BookUpdateDto bookUpdateDto) {
+    BookDto updateBook(@RequestBody @Valid BookUpdateDto bookUpdateDto) {
         return bookService.updateBook(bookUpdateDto);
     }
 

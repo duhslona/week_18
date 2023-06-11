@@ -1,5 +1,7 @@
 package my.backend.library.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import my.backend.library.dto.AuthorCreateDto;
 import my.backend.library.dto.AuthorDto;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "library-users")
 public class AuthorController {
 
     private final AuthorService authorService;
@@ -44,12 +47,12 @@ public class AuthorController {
     }
 
     @PostMapping("/author/create")
-    AuthorDto createAuthor(@RequestBody AuthorCreateDto authorCreateDto) {
+    AuthorDto createAuthor(@RequestBody @Valid AuthorCreateDto authorCreateDto) {
         return authorService.createAuthor(authorCreateDto);
     }
 
     @PutMapping("/author/update")
-    AuthorDto updateAuthor(@RequestBody AuthorUpdateDto authorUpdateDto) {
+    AuthorDto updateAuthor(@RequestBody @Valid AuthorUpdateDto authorUpdateDto) {
         return authorService.updateAuthor(authorUpdateDto);
     }
 
@@ -59,7 +62,7 @@ public class AuthorController {
     }
 
     @PatchMapping("/author/patch/{id}")
-    AuthorDto updatePartAuthor(@PathVariable("id") Long id, @RequestBody AuthorUpdateDto authorUpdateDto) {
+    AuthorDto updatePartAuthor(@PathVariable("id") Long id, @RequestBody @Valid AuthorUpdateDto authorUpdateDto) {
         return authorService.updatePartAuthor(id, authorUpdateDto);
     }
 }
