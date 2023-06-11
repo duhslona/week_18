@@ -28,6 +28,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -163,20 +164,10 @@ public class AuthorServiceTest {
 
     @Test()
     public void getAuthorByNameV3() {
-        Specification<Author> specification = new Specification<>() {
-            @Override
-            public Predicate toPredicate(Root<Author> root,
-                                         CriteriaQuery<?> query,
-                                         CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.equal(root.get("name"), author.getName());
-            }
-        };
-
-        when(authorRepository.findAll()).thenReturn(Collections.singletonList(author));
+        when(authorRepository).thenReturn((AuthorRepository) Collections.singletonList(author));
 
         List<AuthorDto> authorDto = authorService.getByNameV3(author.getName());
 
-//        verify(authorRepository).findAll(specification);
         Assertions.assertEquals(authorDto.size(), 1);
         Assertions.assertEquals(authorDto.get(0).getId(), author.getId());
         Assertions.assertEquals(authorDto.get(0).getName(), author.getName());
