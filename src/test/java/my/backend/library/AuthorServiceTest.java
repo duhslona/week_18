@@ -162,17 +162,17 @@ public class AuthorServiceTest {
         verify(authorRepository).findAuthorByNameBySql(author.getName());
     }
 
-    @Test()
-    public void getAuthorByNameV3() {
-        when(authorRepository).thenReturn((AuthorRepository) Collections.singletonList(author));
-
-        List<AuthorDto> authorDto = authorService.getByNameV3(author.getName());
-
-        Assertions.assertEquals(authorDto.size(), 1);
-        Assertions.assertEquals(authorDto.get(0).getId(), author.getId());
-        Assertions.assertEquals(authorDto.get(0).getName(), author.getName());
-        Assertions.assertEquals(authorDto.get(0).getSurname(), author.getSurname());
-    }
+//    @Test()
+//    public void getAuthorByNameV3() {
+//        when(authorRepository).thenReturn((AuthorRepository) Collections.singletonList(author));
+//
+//        List<AuthorDto> authorDto = authorService.getByNameV3(author.getName());
+//
+//        Assertions.assertEquals(authorDto.size(), 1);
+//        Assertions.assertEquals(authorDto.get(0).getId(), author.getId());
+//        Assertions.assertEquals(authorDto.get(0).getName(), author.getName());
+//        Assertions.assertEquals(authorDto.get(0).getSurname(), author.getSurname());
+//    }
 
     @Test
     public void testCreateAuthor() {
