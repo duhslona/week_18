@@ -1,6 +1,7 @@
 package my.backend.library.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,8 +19,7 @@ public class BookUpdateDto {
     @NotBlank(message = "Название книги не должно быть пустым")
     @Size(min = 2, message = "Название книги должно быть не короче 2 символов")
     private String name;
-    @NotBlank(message = "Список авторов не можнт быть пустым")
     private List<Long> authorIds;
-    @NotBlank(message = "Книга должна иметь жанр")
+    @NotNull(message = "Книга должна иметь жанр")
     private Long genreId;
 }

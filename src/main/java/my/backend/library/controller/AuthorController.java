@@ -62,7 +62,7 @@ public class AuthorController {
     }
 
     @PatchMapping("/author/patch/{id}")
-    AuthorDto updatePartAuthor(@PathVariable("id") Long id, @RequestBody @Valid AuthorUpdateDto authorUpdateDto) {
+    AuthorDto updatePartAuthor(@PathVariable("id") Long id, @RequestBody AuthorUpdateDto authorUpdateDto) {
         return authorService.updatePartAuthor(id, authorUpdateDto);
     }
 }
