@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/book").hasRole("USER")
                                 .requestMatchers("/book/v2").hasRole("ADMIN")
+                                .requestMatchers("/health").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .csrf().disable()
