@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: library-k8s
+spec:
+  selector:
+    matchLabels:
+      app: library-k8s
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: library-k8s
+    spec:
+      containers:
+        - name: library-k8s
+          image: library-k8s:1.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
