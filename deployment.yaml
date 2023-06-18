@@ -18,3 +18,6 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres.default.svc.cluster.local:5432/library"
