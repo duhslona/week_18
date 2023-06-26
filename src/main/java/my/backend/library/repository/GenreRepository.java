@@ -19,3 +19,4 @@ public interface GenreRepository extends JpaRepository<Genre, Long> {
 //            "where g.id = ?1")
 //    Optional<List<GenreWithBooksDto>> findCustom(Long id);
 }
+
